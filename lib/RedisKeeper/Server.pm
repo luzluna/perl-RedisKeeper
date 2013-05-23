@@ -10,10 +10,6 @@ use Net::ZooKeeper qw(:events :node_flags :acls);
 use Redis;
 use Params::Validate qw(:all);
 
-require Exporter;
-
-our @ISA = qw(Exporter);
-
 sub new {
 	my $class = shift;
 

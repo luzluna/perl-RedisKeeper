@@ -11,10 +11,6 @@ use Redis;
 use Params::Validate qw(:all);
 use String::CRC32;
 
-require Exporter;
-
-our @ISA = qw(Exporter);
-
 # TODO: timeout implementation
 #  - if timeout is 0. if fail make exception
 #  - if timeout is n sec. retry while n sec.
