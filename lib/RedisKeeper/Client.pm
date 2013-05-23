@@ -9,7 +9,6 @@ use Try::Tiny;
 use Net::ZooKeeper qw(:events :node_flags :acls);
 use Redis;
 use Params::Validate qw(:all);
-use String::CRC32;
 
 # TODO: timeout implementation
 #  - if timeout is 0. if fail make exception
@@ -24,6 +23,10 @@ sub new {
 		zk_client_name	=> { type => SCALAR, default => 'client' },
 		zk_server_path	=> { type => SCALAR, default => '/redis/servers/cluster' },
 		timeout		=> { type => SCALAR, default => 5000 },
+        selector    => { type => CODEREF, sub {
+                            my ($key, $size) = @_;
+                            return crc32($key) % $size;
+                       }},
 		data		=> { type => SCALAR, default => 0 },
 		debug		=> { type => BOOLEAN, default => undef },
 	});
@@ -84,8 +87,7 @@ sub _choose_server {
 		$self->_refresh_redis();
 	}
 
-
-	my $idx = crc32($key) % (scalar @{$self->{redis}});
+	my $idx = $self->{selector}($key, scalar @{$self->{redis}});
 	my $redis = $self->{redis}[$idx];
 
 	if ( $redis->{watch}->wait('timeout'=>0) ) {

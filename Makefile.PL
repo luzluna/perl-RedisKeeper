@@ -20,7 +20,6 @@ my %WriteMakefileArgs = (
     "Net::ZooKeeper" => 0,
     "Redis" => 0,
     "Params::Validate" => 0,
-    "String::CRC32" => 0,
     "strict" => 0,
     "warnings" => 0
   },
