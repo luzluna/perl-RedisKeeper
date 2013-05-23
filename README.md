@@ -10,6 +10,8 @@ version 0.01:
  * https://github.com/chrisa/perl-Net-ZooKeeper/commit/26c87fe751e075dda0308533ca18942a928cb5d8
  * https://github.com/chrisa/perl-Net-ZooKeeper/pull/1 
 
+Features
+
  * Redis Server Monitering.
  * Automatic FailOver.(leader election by zookeeper)
  * Automatic Sharding (not yet)
