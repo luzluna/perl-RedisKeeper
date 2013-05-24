@@ -1,5 +1,14 @@
 package RedisKeeper::Client;
 
+=head1 NAME
+
+RedisKeeper - Zookeeper Managed Redis Cluster
+
+=head1 VERSION
+
+version 0.01
+=cut
+
 our $VERSION = '0.01';
 
 use strict;
@@ -198,25 +207,33 @@ sub DESTROY {
 
 __END__
 
-=pod
-
-=head NAME
-
-RedisKeeper - Zookeeper Managed Redis Cluster
-
-=head1 VERSION
-
-version 0.01
-
 =head1 SYNOPSIS
 
-not yet...
+RedisKeeper client implementation
 
 =head1 DESCRIPTION
 
-Zookeeper Managed Redis Cluster
+Zookeeper Managed Redis Cluster Client
 
+=head1 SUBROUTINES/METHODS
 
+=over
+
+=item new
+  new
+  - zk_servers : zookeeper server list
+  - zk_client_path : default('/redis/client')
+  - zk_client_name : default('client')
+  - zk_server_path : default('/redis/servers/')
+  - timeout : redis retry timeout(not yet implemented)
+  - selector : cluster selector handler
+  - debug : boolean
+=cut
+=item DESTROY
+  cleanup zookeeper handler
+=cut
+
+=back
 
 =head1 SEE ALSO
 

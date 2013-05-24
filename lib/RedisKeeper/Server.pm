@@ -1,5 +1,18 @@
 package RedisKeeper::Server;
 
+use 5.008;
+use strict;
+use warnings FATAL => 'all';
+
+=head1 NAME
+
+RedisKeeper::Server - Redis Server Manager via Zookeeper
+
+=head1 VERSION
+
+version 0.01
+=cut
+
 our $VERSION = '0.01';
 
 use strict;
@@ -237,43 +250,62 @@ sub DESTROY {
 
 __END__
 
-=pod
-
-=head NAME
-
-RedisKeeper - Zookeeper Managed Redis Cluster
-
-=head1 VERSION
-
-version 0.01
-
 =head1 SYNOPSIS
 
-not yet...
+Redis Server Manager
 
 =head1 DESCRIPTION
 
 Zookeeper Managed Redis Cluster
 
+=head1 SUBROUTINES/METHODS
 
+=over
+
+=item new
+  new()
+  - zk_servers : zookeeper server list (ex. 127.0.0.1:2181,127.0.0.1:2182)
+  - zk_server_path : default is /redis/server
+  - redis_server : redis server ip:port
+  - sharded_id : sharding id
+  - debug : boolean
+=cut
+=item run
+  main loop
+=cut
+=item DESTROY
+  zookeeper ephemeral node destroy for fast failover.
+=cut
+
+=back
 
 =head1 SEE ALSO
 
 L<Redis>
 L<Net::ZooKeeper>
 
-=head1 ACKNOWLEDGEMENTS
-
-
 =head1 AUTHOR
 
-Dongsik Park <luzluna@gmail.com>
+Dongsik Park, C<< <luzluna at gmail.com> >>
 
-=head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Dongsik Park.
 
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
+=head1 BUGS
+
+=head1 SUPPORT
+
+=head1 ACKNOWLEDGEMENTS
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2013 Dongsik Park.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the the Artistic License (2.0). You may obtain a
+copy of the full license at:
+
+L<http://www.perlfoundation.org/artistic_license_2_0>
 
 =cut
+
+
