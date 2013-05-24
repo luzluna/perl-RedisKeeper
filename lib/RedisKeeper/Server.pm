@@ -252,7 +252,19 @@ __END__
 
 =head1 SYNOPSIS
 
-Redis Server Manager
+  my $s = RedisKeeper::Server->new({
+      zk_servers => "127.0.0.1:2181,127.0.0.1:2182",
+      redis_server => "127.0.0.1:9987",
+      sharded_id => "0",
+  });
+  sub exit_handler {
+      $server->DESTROY();
+      exit(0);
+  }
+  $SIG{INT} = \&exit_handler;
+  $SIG{TERM} = \&exit_handler;
+  $SIG{HUP} = \&exit_handler;
+  $s->run();
 
 =head1 DESCRIPTION
 

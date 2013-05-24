@@ -2,7 +2,7 @@ package RedisKeeper::Client;
 
 =head1 NAME
 
-RedisKeeper - Zookeeper Managed Redis Cluster
+RedisKeeper::Client - Zookeeper Managed Redis Cluster Client
 
 =head1 VERSION
 
@@ -209,7 +209,12 @@ __END__
 
 =head1 SYNOPSIS
 
-RedisKeeper client implementation
+  use RedisKeeper::Client;
+  my $c = RedisKeeper::Client->new({
+      zk_servers => "127.0.0.1:2181,127.0.0.1:2182",
+      });
+  $c->set("key", "value");
+  $c->get("key");
 
 =head1 DESCRIPTION
 
@@ -219,7 +224,7 @@ Zookeeper Managed Redis Cluster Client
 
 =over
 
-=item new
+=item new()
   new
   - zk_servers : zookeeper server list
   - zk_client_path : default('/redis/client')
@@ -228,10 +233,9 @@ Zookeeper Managed Redis Cluster Client
   - timeout : redis retry timeout(not yet implemented)
   - selector : cluster selector handler
   - debug : boolean
-=cut
-=item DESTROY
+
+=item DESTROY()
   cleanup zookeeper handler
-=cut
 
 =back
 
