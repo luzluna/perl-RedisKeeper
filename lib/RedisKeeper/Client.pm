@@ -181,8 +181,8 @@ sub DESTROY {
 
 	my $self = shift;
 
+	$self->{zkh}->delete($self->{client});
 	$self->{zkh} = undef;
-	# TODO:zk release
 }
 
 1;
