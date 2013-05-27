@@ -14,14 +14,9 @@ our $VERSION = '0.01';
 use strict;
 use warnings;
 
-use Try::Tiny;
 use Net::ZooKeeper qw(:events :node_flags :acls);
 use Redis;
 use Params::Validate qw(:all);
-
-# TODO: timeout implementation
-#  - if timeout is 0. if fail make exception
-#  - if timeout is n sec. retry while n sec.
 
 sub new {
 	my $class = shift;
@@ -31,7 +26,6 @@ sub new {
 		zk_client_path	=> { type => SCALAR, default => '/redis/client' },
 		zk_client_name	=> { type => SCALAR, default => 'client' },
 		zk_server_path	=> { type => SCALAR, default => '/redis/servers/cluster' },
-		timeout		=> { type => SCALAR, default => 5000 },
         selector    => { type => CODEREF, sub {
                             my ($key, $size) = @_;
                             return crc32($key) % $size;
@@ -127,23 +121,11 @@ sub _update_redis {
 	my ($self, $idx) = @_;
 	my $redis = $self->{redis}[$idx];
 
-	my $fail;
-	for (1..5) {	# retry 5 times
-		my $redis_address = $self->{zkh}->get( $self->{zk_server_path}.'/'.$redis->{id}, 'watch' => $redis->{watch} );
-		try {
-			$redis->{redis} = Redis->new( server => $redis_address, encoding => undef );
-			$redis->{address} = $redis_address;
-			$fail = undef;
-		}
-		catch {
-			$fail = 1;
-		};
-		last if (!$fail);
+	my $redis_address = $self->{zkh}->get( $self->{zk_server_path}.'/'.$redis->{id}, 'watch' => $redis->{watch} );
+	$redis->{redis} = Redis->new( server => $redis_address, encoding => undef );
+	$redis->{address} = $redis_address;
 
-		$redis->{watch}->wait('timeout'=>1000);
-	}
-	print "master changed($idx : $redis->{address})\n" if ($self->{debug} && !$fail);
-	print "master change fail($idx : $redis->{address})\n" if ($self->{debug} && $fail);
+	print "master changed($idx : $redis->{address})\n" if ($self->{debug});
 }
 
 ### Deal with common, general case, Redis commands
