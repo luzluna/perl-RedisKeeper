@@ -1,0 +1,11 @@
+redis:
+    ip: 172.17.4.107
+    port: 6378
+
+zookeeper_server_path: /redis/servers
+sharded_id: 0
+
+zookeeper:
+    - 172.17.4.107:2181
+    - 172.17.4.108:2181
+    - 172.17.4.109:2181
